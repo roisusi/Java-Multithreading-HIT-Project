@@ -11,11 +11,19 @@ import java.util.Objects;
 public class Node<T> {
     private T data;
     private Node<T> parent;
+    private Integer value = null;
 
 
     public Node(T someObject, final Node<T> discoveredBy){
         this.data = someObject;
         this.parent = discoveredBy;
+        this.value =null;
+    }
+
+    public Node( T someObject,Node<T> discoveredBy, int value){
+        this.data = someObject;
+        this.parent = discoveredBy;
+        this.value = value;
     }
 
     public Node(T someObject){
@@ -41,6 +49,12 @@ public class Node<T> {
     public void setParent(Node<T> parent) {
         this.parent = parent;
     }
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(int value) { this.value = value; }
 
     /*
 This is used when accessing objects multiple times with comparisons,

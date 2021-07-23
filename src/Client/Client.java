@@ -102,6 +102,23 @@ public class Client {
                     System.out.println("is " + integer);
                     break;
                 }
+                case "cheapest path": {
+                    System.out.println("type source and destination index:");
+                    toServer.writeObject("cheapest path");
+
+                    //send start and dest index that scanned from user
+//                    toServer.writeObject(readIndex());
+//                    toServer.writeObject(readIndex());
+                    toServer.writeObject(new Index(1, 0));
+                    toServer.writeObject(new Index(2, 2));
+
+                    // get cheapest path as list
+                    List<Index> cheapest =
+                            new ArrayList<Index>((List<Index>) fromServer.readObject());
+                    System.out.println("from client - Cheapest Path is: " + cheapest);
+                    break;
+                }
+
                 case "stop" :{
                     toServer.writeObject("stop");
                     fromServer.close();
@@ -110,6 +127,7 @@ public class Client {
                     stop = true;
                     break;
                 }
+
             }
 
         }
