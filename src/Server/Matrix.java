@@ -1,9 +1,11 @@
 package Server;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Matrix {
+public class Matrix implements Serializable
+{
     /**
      * Neighboring Indices are up,down, left,right
      *   1 0 0
@@ -26,6 +28,10 @@ public class Matrix {
 
     int[][] primitiveMatrix;
 
+    public Matrix(){
+        //Nothing need to be
+    }
+
     public Matrix(int[][] oArray){
         List<int[]> list = new ArrayList<>();
         for (int[] row : oArray) {
@@ -35,9 +41,9 @@ public class Matrix {
         primitiveMatrix = list.toArray(new int[0][]);
     }
 
-    public Matrix() {
+    public Matrix(int a , int b) {
         Random r = new Random();
-        primitiveMatrix = new int[5][5];
+        primitiveMatrix = new int[a][b];
         for (int i = 0; i < primitiveMatrix.length; i++) {
             for (int j = 0; j < primitiveMatrix[0].length; j++) {
                 primitiveMatrix[i][j] = r.nextInt(2);
@@ -47,7 +53,6 @@ public class Matrix {
             String s = Arrays.toString(row);
             System.out.println(s);
         }
-        System.out.println("\n");
     }
 
     @Override

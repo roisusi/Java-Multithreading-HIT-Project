@@ -22,7 +22,7 @@ public class SubMarineGame {
     }
 
     public Integer checkIfSubMarine() throws Exception {
-        //System.out.println(sets);
+        readWriteLock.writeLock().lock();
         List<Object> data = new ArrayList<>();
         data = sets.stream().collect(Collectors.toList());
         ArrayList<Index> indices;
@@ -46,6 +46,8 @@ public class SubMarineGame {
         threadPoolExecutor.shutdown();
 
         if (countShip == sets.size()){
+            readWriteLock.writeLock().unlock();
+
             return countShip;
         }
         else {
@@ -55,7 +57,6 @@ public class SubMarineGame {
     }
 
     public Callable runSets(ArrayList<Index> indices) {
-        readWriteLock.writeLock().lock();
         Callable <Integer> matrixCallable = (()-> {
             int col=1,row=1;
             if (indices.size() == 1){
@@ -82,10 +83,12 @@ public class SubMarineGame {
             return 0;
         });
 
-
-    readWriteLock.writeLock().unlock();
     return matrixCallable;
 
+    }
+
+    public void drian (){
+        threadPoolExecutor.shutdownNow();
     }
 
 

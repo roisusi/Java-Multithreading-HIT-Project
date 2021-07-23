@@ -117,9 +117,11 @@ public class TcpServer {
                             serverToSpecificClient.getOutputStream().close();
                             serverToSpecificClient.close();
                         } catch (IOException ioException) {
-                            System.err.println(ioException.getMessage());
+                            System.err.println("disconnection " + ioException.getMessage());
+
                         } catch (ClassNotFoundException ce) {
                             System.err.println(ce.getMessage());
+                            stop();
                         }
                     };
 
