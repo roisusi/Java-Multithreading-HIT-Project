@@ -38,7 +38,6 @@ public class SubMarineGame {
             for (int i = 0; i < data.size(); i++) {
 
                 indices = (ArrayList<Index>) data.get(i);
-
                 futureStock = threadPoolExecutor.submit(runSets(indices));
 
                 //System.out.println("Future getting : " + futureStock.get() + " is Done ? " + futureStock.isDone() );

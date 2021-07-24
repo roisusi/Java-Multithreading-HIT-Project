@@ -151,8 +151,7 @@ public class Matrix implements Serializable {
                 }
             }
         }
-
-
+        
         // sort by list size
         Collections.sort(savingEachGraph, (a1, a2) -> {
             return (a1.size() - a2.size());

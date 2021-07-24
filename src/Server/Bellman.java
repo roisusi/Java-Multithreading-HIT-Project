@@ -80,13 +80,13 @@ public class Bellman<T> extends Thread {
         mainThread.start();
 
 
-//        //print the map **optional**
-//        for (Node<Index> name: weights.keySet()) {
-//            String key = name.toString();
-//            int value = weights.get(name).getDistance();
-//            Node<Index> par= weights.get(name).getParent();
-//            System.out.println(key + " " + value + " " + par);
-//        }
+        //print the map **optional**
+        for (Node<Index> name: weights.keySet()) {
+            String key = name.toString();
+            int value = weights.get(name).getDistance();
+            Node<Index> par= weights.get(name).getParent();
+            System.out.println(key + " " + value + " " + par);
+        }
 
         //create a list of the cheapest path from starting vertex to destination vertex
         // using the map that contains the cheapest path from start vertex to every vertex in the matrix.

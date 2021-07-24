@@ -225,21 +225,7 @@ public class Client {
                         System.out.println("is " + integer);
                         break;
                     }
-                    case "5": {
-                        showMenu = true;
-                        break;
-                    }
-                    case "stop": {
-                        toServer.writeObject("stop");
-                        fromServer.close();
-                        toServer.close();
-                        socket.close();
-                        stop = true;
-                        break;
-                    }
-                    default:
-                        System.out.println("Please Select from the Menu or \"5\" to choose different Matrix or \"stop\" to exit");
-                    case "cheapest path": {
+                    case "4": {
                         System.out.println("type source and destination index:");
                         toServer.writeObject("cheapest path");
 
@@ -255,6 +241,20 @@ public class Client {
                         System.out.println("from client - Cheapest Path is: " + cheapest);
                         break;
                     }
+                    case "5": {
+                        showMenu = true;
+                        break;
+                    }
+                    case "stop": {
+                        toServer.writeObject("stop");
+                        fromServer.close();
+                        toServer.close();
+                        socket.close();
+                        stop = true;
+                        break;
+                    }
+                    default:
+                        System.out.println("Please Select from the Menu or \"5\" to choose different Matrix or \"stop\" to exit");
 
                 }
 
