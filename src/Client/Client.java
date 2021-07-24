@@ -44,7 +44,7 @@ public class Client {
         boolean showMenu = true;
         Matrix matrix = new Matrix();
         Scanner scannerMatrix;
-        String readFromUser="";
+        String readFromUser = "";
 
         // sending #1 matrix
         int[][] matrix1 = {
@@ -92,10 +92,9 @@ public class Client {
         while (!stop) {
 
 
-
             //System.out.println("Please enter one of the following: matrix,reachables,neighbors");
 
-            if (showMenu){
+            if (showMenu) {
                 System.out.println("Hello and welcome to Matrix-Graphs games\n" +
                         "First lets build matrix for our game:\n" +
                         "Select Matrix from the list or you can choose option 6 for a random one\n" +
@@ -110,8 +109,8 @@ public class Client {
                 readFromUser = scannerMatrix.nextLine();
                 //send "matrix" command then write 2d array to socket
 
-                switch (readFromUser){
-                    case "1" :{
+                switch (readFromUser) {
+                    case "1": {
                         toServer.writeObject("matrix");
                         toServer.writeObject(matrix1);
                         matrix = (Matrix) fromServer.readObject();
@@ -119,7 +118,7 @@ public class Client {
                         showMenu = false;
                         break;
                     }
-                    case "2" :{
+                    case "2": {
                         toServer.writeObject("matrix");
                         toServer.writeObject(matrix2);
                         matrix = (Matrix) fromServer.readObject();
@@ -127,7 +126,7 @@ public class Client {
                         showMenu = false;
                         break;
                     }
-                    case "3" :{
+                    case "3": {
                         toServer.writeObject("matrix");
                         toServer.writeObject(matrix3);
                         matrix = (Matrix) fromServer.readObject();
@@ -135,7 +134,7 @@ public class Client {
                         showMenu = false;
                         break;
                     }
-                    case "4" :{
+                    case "4": {
                         toServer.writeObject("matrix");
                         toServer.writeObject(matrix4);
                         matrix = (Matrix) fromServer.readObject();
@@ -143,7 +142,7 @@ public class Client {
                         showMenu = false;
                         break;
                     }
-                    case "5" :{
+                    case "5": {
                         toServer.writeObject("matrix");
                         toServer.writeObject(matrix5NotGood);
                         matrix = (Matrix) fromServer.readObject();
@@ -156,34 +155,33 @@ public class Client {
                         System.out.println("Build you own Matrix until 1000X1000");
                         toServer.writeObject("buildRandomMatrix");
 
-                        while (isNumberOK){
+                        while (isNumberOK) {
                             System.out.println("Please Enter Columns");
                             readFromUser = scannerMatrix.nextLine();
                             isNumberOK = catchNotANumber(readFromUser);
-                            if (!isNumberOK){
+                            if (!isNumberOK) {
                                 toServer.writeObject(Integer.parseInt(readFromUser));
-                            }
-                            else continue;
+                            } else continue;
                             System.out.println("Please Enter Rows");
                             readFromUser = scannerMatrix.nextLine();
                             isNumberOK = catchNotANumber(readFromUser);
-                            if (!isNumberOK){
+                            if (!isNumberOK) {
                                 toServer.writeObject(Integer.parseInt(readFromUser));
-                            }
-                            else continue;
+                            } else continue;
                         }
                         matrix = (Matrix) fromServer.readObject();
                         System.out.println("Your Random Matrix is : \n" + matrix);
                         showMenu = false;
                         break;
                     }
-                    default:showMenu = true;
+                    default:
+                        showMenu = true;
 
                 }
             }
 
 
-            if(showMenu == false) {
+            if (showMenu == false) {
                 System.out.println("Please select What Game you want to play with the ");
                 Scanner scannerOption = new Scanner(System.in);
                 readFromUser = scannerOption.nextLine();
@@ -192,7 +190,7 @@ public class Client {
                     case "1": {
                         toServer.writeObject("findPaths");
                         toServer.writeObject(matrix);
-                        Object paths = (List<HashSet<Index>>)fromServer.readObject();
+                        Object paths = (List<HashSet<Index>>) fromServer.readObject();
                         System.out.println("The Indices of: ");
                         if (matrix != null)
                             matrix.printMatrix();
@@ -202,7 +200,7 @@ public class Client {
                     case "2": {
                         System.out.println();
                         System.out.println("For shortest path we will use spacial nXn Matrix up to 50x50");
-                        if(matrix.getColNumber() != matrix.getRowNumber() || matrix.getRowNumber() > 50 || matrix.getColNumber() > 50) {
+                        if (matrix.getColNumber() != matrix.getRowNumber() || matrix.getRowNumber() > 50 || matrix.getColNumber() > 50) {
                             System.out.println("Sorry your Matrix is not nXn or above 50x50");
                             break;
                         }
@@ -241,14 +239,31 @@ public class Client {
                     }
                     default:
                         System.out.println("Please Select from the Menu or \"5\" to choose different Matrix or \"stop\" to exit");
+                    case "cheapest path": {
+                        System.out.println("type source and destination index:");
+                        toServer.writeObject("cheapest path");
+
+                        //send start and dest index that scanned from user
+//                    toServer.writeObject(readIndex());
+//                    toServer.writeObject(readIndex());
+                        toServer.writeObject(new Index(1, 0));
+                        toServer.writeObject(new Index(2, 2));
+
+                        // get cheapest path as list
+                        List<Index> cheapest =
+                                new ArrayList<Index>((List<Index>) fromServer.readObject());
+                        System.out.println("from client - Cheapest Path is: " + cheapest);
+                        break;
+                    }
+
                 }
+
             }
 
+            System.out.println("client: Closed operational socket");
+
+
         }
-
-        System.out.println("client: Closed operational socket");
-
-
     }
 
     public static boolean catchNotANumber(String readFromUser){
@@ -266,6 +281,5 @@ public class Client {
 
         return isNumberOK;
     }
-
 
 }
