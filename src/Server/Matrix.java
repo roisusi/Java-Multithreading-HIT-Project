@@ -37,6 +37,11 @@ public class Matrix implements Serializable {
         System.out.println("\n");
     }
 
+    /**
+     *
+     * @return
+     */
+
     @Override
     public String toString(){
         StringBuilder stringBuilder = new StringBuilder();
@@ -118,6 +123,8 @@ public class Matrix implements Serializable {
         }
 
         // running on every index from allUnVisitedItems (equals to 1)
+
+        //TODO Threads
         for (Index item : allUnVisitedItems) {
 
             // for each index equals to 1, check his neighbours and creating List of tying components
@@ -129,6 +136,7 @@ public class Matrix implements Serializable {
             // collect each tying component to list of lists
             savingEachGraph.add(new HashSet<>(returnedGraphs));
         }
+        //TODO Threads
 
         // delete duplicate lists
         for(int i = 1; i< savingEachGraph.size(); i++){
@@ -151,7 +159,7 @@ public class Matrix implements Serializable {
                 }
             }
         }
-        
+
         // sort by list size
         Collections.sort(savingEachGraph, (a1, a2) -> {
             return (a1.size() - a2.size());
@@ -270,26 +278,26 @@ public class Matrix implements Serializable {
         return listOfLists;
     }
 
-    public static void main(String[] args) {
-        int[][] source = {
-                {1, 0, 1, 0, 0},
-                {1, 0, 1, 0, 1},
-                {1, 0, 0, 1, 1},
-                {0, 0, 1, 0, 1},
-                {1, 1, 1, 0, 0}
-
-        };
-        Index start = new Index(1,4);
-        Index end = new Index(4,0);
-        Matrix matrix = new Matrix(source);
-
-
-//        List<HashSet<Index>> hashSetGroups =  Matrix.findGroups(matrix);
-//        System.out.println(hashSetGroups);
-//        List<List> listGroups = convertHashToList(hashSetGroups);
-//        System.out.println(listGroups);
-//        findPaths(matrix, start,end);
-
-    }
+//    public static void main(String[] args) {
+//        int[][] source = {
+//                {1, 0, 1, 0, 0},
+//                {1, 0, 1, 0, 1},
+//                {1, 0, 0, 1, 1},
+//                {0, 0, 1, 0, 1},
+//                {1, 1, 1, 0, 0}
+//
+//        };
+//        Index start = new Index(1,4);
+//        Index end = new Index(4,0);
+//        Matrix matrix = new Matrix(source);
+//
+//
+////        List<HashSet<Index>> hashSetGroups =  Matrix.findGroups(matrix);
+////        System.out.println(hashSetGroups);
+////        List<List> listGroups = convertHashToList(hashSetGroups);
+////        System.out.println(listGroups);
+////        findPaths(matrix, start,end);
+//
+//    }
 }
 

@@ -15,6 +15,11 @@ public class Bellman<T> extends Thread {
     }
 
 
+    /**
+     * This method runs Bellman algorithm on multithreading
+     * @param graph get Matrix from CheapestPathMatrix Class {@link CheapestPathMatrix} as the Traversal paths
+     * @return List of all the indexes from one point to another as the cheapest path
+     */
     public Collection<T> lightPath(CheapestPathMatrix graph) {
         Thread mainThread;
         System.out.println("start: " + graph.getStart() + "dest: " + graph.getDestination());
