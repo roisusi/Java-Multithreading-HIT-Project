@@ -16,26 +16,33 @@ public class MatrixIHandler implements IHandler {
 
         boolean doWork = true;
         while(doWork){
-            /*
-            Use-cases:
-            - client sends a 2d array. handler converts to a Server.Matrix object. command name: "matrix"
-            - client sends an Server.Index and wishes to get its neighbors. command: "neighbors"
-            - client sends an Server.Index and wishes to get its reachable indices command: "reachables"
-            - client sends a start and end Server.Index and wishes to get all possible routes between them
-            ....
-
-            primitives: byte,short,int,long,float,double,char,boolean
-
-             */
             switch (objectInputStream.readObject().toString()){
                 case "matrix":{
                     int[][] tempArray = (int[][])objectInputStream.readObject();
-                    System.out.println("Server: Got 2d array from client");
                     this.matrix = new Matrix(tempArray);
                     objectOutputStream.writeObject(this.matrix);
                     break;
                 }
-
+                case "buildRandomMatrix":{
+                    int n= (Integer)objectInputStream.readObject();
+                    int m= (Integer)objectInputStream.readObject();
+                    this.matrix = new Matrix(n,m);
+                    objectOutputStream.writeObject(this.matrix);
+                    break;
+                }
+                case "findIndices":{
+                    matrix = (Matrix)objectInputStream.readObject();
+                    matrix.printMatrix();
+                    List<List<Index>> paths = matrix.findPaths(matrix,new Index(5,5),new Index(2,2));
+                    System.out.println(paths);
+                    objectOutputStream.writeObject(matrix.printPath(paths));
+                    break;
+                }
+                case "findPaths":{
+                    matrix = (Matrix)objectInputStream.readObject();
+                    objectOutputStream.writeObject(matrix.findGroups(matrix));
+                    break;
+                }
                 case "subGame":{
                     matrix = (Matrix)objectInputStream.readObject();
                     if (matrix!=null){
@@ -45,12 +52,11 @@ public class MatrixIHandler implements IHandler {
                             objectOutputStream.writeObject(numOfShip);
                             subMarineGame.drian();
                         }catch (Exception e){
-                            System.out.println("Class Exception Not good");
+                            System.out.println("Class Exception Not good " + e);
                         }
                     }
                     break;
                 }
-
                 case "stop":{
                     doWork = false;
                     break;

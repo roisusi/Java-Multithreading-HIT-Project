@@ -1,6 +1,7 @@
 package Server;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.*;
@@ -10,21 +11,25 @@ import java.util.stream.Collectors;
 
 public class SubMarineGame {
 
-    private List<Set<Index>> sets;
+    private List<HashSet<Index>> sets;
     private ReadWriteLock readWriteLock;
     private Future<Integer> futureStock ;
     private ThreadPoolExecutor threadPoolExecutor;
+    private List<List> listGroups;
 
 
     public SubMarineGame(Matrix generateMatrix) {
-        this.sets = generateMatrix.getOnes(generateMatrix);
+        this.sets = generateMatrix.findGroups(generateMatrix);
+        listGroups = generateMatrix.convertHashToList(this.sets);
+
         readWriteLock = new ReentrantReadWriteLock();
     }
 
     public Integer checkIfSubMarine() throws Exception {
+        //System.out.println(listGroups);
         readWriteLock.writeLock().lock();
         List<Object> data = new ArrayList<>();
-        data = sets.stream().collect(Collectors.toList());
+        data = listGroups.stream().collect(Collectors.toList());
         ArrayList<Index> indices;
         Integer countShip = 0;
         threadPoolExecutor = new ThreadPoolExecutor(2,5,10, TimeUnit.SECONDS,new LinkedBlockingDeque<>());
@@ -45,7 +50,7 @@ public class SubMarineGame {
 
         threadPoolExecutor.shutdown();
 
-        if (countShip == sets.size()){
+        if (countShip == listGroups.size()){
             readWriteLock.writeLock().unlock();
 
             return countShip;
@@ -53,7 +58,6 @@ public class SubMarineGame {
         else {
             return -1;
         }
-
     }
 
     public Callable runSets(ArrayList<Index> indices) {
@@ -76,15 +80,14 @@ public class SubMarineGame {
                 }
             }
             if (col*row == indices.size() && indices.size() != 1 ){
-                System.out.println( "Ships is calculate on Thread : " + Thread.currentThread().getName());
+                //System.out.println( "Ships is calculate on Thread : " + Thread.currentThread().getName());
                 return 1;
             }
-            System.out.println("Row is : " + row + " and Col is : " + col + " Threads : " + Thread.currentThread().getName());
+            //System.out.println("Row is : " + row + " and Col is : " + col + " Threads : " + Thread.currentThread().getName());
             return 0;
         });
 
     return matrixCallable;
-
     }
 
     public void drian (){
@@ -105,16 +108,16 @@ public class SubMarineGame {
         return source;
     }
 
-//    public static void main(String[] args) throws Exception {
-//        Matrix matrix = new Matrix(makeTheMatrix());
-//        SubMarineGame sub = new SubMarineGame(matrix);
-//        int ships =  sub.checkIfSubMarine();
-//        if (ships != -1)
-//            System.out.println("You Have " + ships + " Ships" );
-//        else
-//            System.out.println("You Have incorrect Input");
-//
-//
-//  }
+    public static void main(String[] args) throws Exception {
+        Matrix matrix = new Matrix(makeTheMatrix());
+        SubMarineGame sub = new SubMarineGame(matrix);
+        int ships =  sub.checkIfSubMarine();
+        if (ships != -1)
+            System.out.println("You Have " + ships + " Ships" );
+        else
+            System.out.println("You Have incorrect Input");
+
+
+  }
 
 }
