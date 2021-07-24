@@ -5,10 +5,10 @@
  
  <b >Ilya : </b> <br>
  
-1. Fix Q4 , Make sure you cant enter negatives <br>
-2. Make input for entering wights matrix
+1. Fix Q4 , Make sure you cant enter negatives V <br>
+2. Make input for entering wights matrix V
 3. Java Docs for : <br>
- 3.1 Bellman.java <br>
+ 3.1 Bellman.java V<br>
  3.2 CheapestPath.java <br>
  3.3 DistFromSource.java <br>
 
