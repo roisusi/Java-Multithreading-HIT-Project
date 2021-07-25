@@ -78,6 +78,7 @@ public class MatrixIHandler implements IHandler {
                 }
 
                 case "cheapest path":{
+                    matrix = (Matrix)objectInputStream.readObject();
                     if (matrix!=null){
                         Index strIndex = (Index)objectInputStream.readObject();
                         Index endIndex = (Index)objectInputStream.readObject();

@@ -81,12 +81,31 @@ public class Client {
 
         };
 
+        int[][] matrix6 = {
+                {100,100, 100},
+                {500, 900, 300}
+        };
+        int[][] matrix7 = {
+                {-1, 1,-1},
+                {5, 6, 1},
+                {8, 1, 3}
+        };
+        int[][] matrix8 = {
+                {3, 7, 0, 10, 1},
+                {5, 16, 0, 20, 3},
+                {6, 7, 5, 1, 11},
+                {9, 18, 6, 15, 11}
+        };
+
 
         Matrix buildMatrix1 = new Matrix(matrix1);
         Matrix buildMatrix2 = new Matrix(matrix2);
         Matrix buildMatrix3 = new Matrix(matrix3);
         Matrix buildMatrix4 = new Matrix(matrix4);
         Matrix buildMatrix5 = new Matrix(matrix5NotGood);
+        Matrix buildMatrix6 = new Matrix(matrix6);
+        Matrix buildMatrix7 = new Matrix(matrix7);
+        Matrix buildMatrix8 = new Matrix(matrix8);
 
 
         while (!stop) {
@@ -97,13 +116,16 @@ public class Client {
             if (showMenu) {
                 System.out.println("Hello and welcome to Matrix-Graphs games\n" +
                         "First lets build matrix for our game:\n" +
-                        "Select Matrix from the list or you can choose option 6 for a random one\n" +
+                        "Select Matrix from the list or you can choose option 9 for a random one\n" +
                         "1.\n" + buildMatrix1 + "\n" +
                         "2.\n" + buildMatrix2 + "\n" +
                         "3.\n" + buildMatrix3 + "\n" +
                         "4.\n" + buildMatrix4 + "\n" +
                         "5.\n" + buildMatrix5 + "\n" +
-                        "6.\nBuild your own Matrix\n");
+                        "6.\n" + buildMatrix6 + "\n" +
+                        "7.\n" + buildMatrix7 + "\n" +
+                        "8.\n" + buildMatrix8 + "\n" +
+                        "9.\nBuild your own Matrix\n");
 
                 scannerMatrix = new Scanner(System.in);
                 readFromUser = scannerMatrix.nextLine();
@@ -151,6 +173,30 @@ public class Client {
                         break;
                     }
                     case "6": {
+                        toServer.writeObject("matrix");
+                        toServer.writeObject(matrix6);
+                        matrix = (Matrix) fromServer.readObject();
+                        System.out.println("you Chose : \n" + matrix);
+                        showMenu = false;
+                        break;
+                    }
+                    case "7": {
+                        toServer.writeObject("matrix");
+                        toServer.writeObject(matrix7);
+                        matrix = (Matrix) fromServer.readObject();
+                        System.out.println("you Chose : \n" + matrix);
+                        showMenu = false;
+                        break;
+                    }
+                    case "8": {
+                        toServer.writeObject("matrix");
+                        toServer.writeObject(matrix8);
+                        matrix = (Matrix) fromServer.readObject();
+                        System.out.println("you Chose : \n" + matrix);
+                        showMenu = false;
+                        break;
+                    }
+                    case "9": {
                         boolean isNumberOK = true;
                         System.out.println("Build you own Matrix until 1000X1000");
                         toServer.writeObject("buildRandomMatrix");
@@ -228,12 +274,11 @@ public class Client {
                     case "4": {
                         System.out.println("type source and destination index:");
                         toServer.writeObject("cheapest path");
+                        toServer.writeObject(matrix);
 
                         //send start and dest index that scanned from user
-//                    toServer.writeObject(readIndex());
-//                    toServer.writeObject(readIndex());
-                        toServer.writeObject(new Index(1, 0));
-                        toServer.writeObject(new Index(2, 2));
+                        toServer.writeObject(readIndex());
+                        toServer.writeObject(readIndex());
 
                         // get cheapest path as list
                         List<Index> cheapest =
@@ -245,6 +290,7 @@ public class Client {
                         showMenu = true;
                         break;
                     }
+
                     case "stop": {
                         toServer.writeObject("stop");
                         fromServer.close();
@@ -280,6 +326,29 @@ public class Client {
         }
 
         return isNumberOK;
+    }
+
+    public static Index readIndex(){
+        String input = null;
+        String[] token;
+        int x;
+        int y;
+
+        Scanner in = null;
+        try {
+            in = new Scanner(System.in);
+            input = in.nextLine();
+
+        }
+        catch (Exception e) {
+        }
+        finally {
+            token = input.split("\\(|,|\\)");
+            x = Integer.parseInt(token[0]);
+            y = Integer.parseInt(token[1]);
+            in.close();
+        }
+        return new Index(x,y);
     }
 
 }
