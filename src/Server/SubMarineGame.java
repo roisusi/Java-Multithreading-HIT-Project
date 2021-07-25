@@ -38,13 +38,8 @@ public class SubMarineGame<T> {
             for (int i = 0; i < data.size(); i++) {
 
                 indices = (ArrayList<Index>) data.get(i);
-<<<<<<< Updated upstream
-
                 futureStock = threadPoolExecutor.submit(runSets(indices));
-=======
-                //futureStock = threadPoolExecutor.submit(runSets(indices));
                 futureTasksList.add(runSets(indices));
->>>>>>> Stashed changes
 
             }
         }catch (ClassCastException e){
