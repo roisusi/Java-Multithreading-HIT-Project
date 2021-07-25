@@ -9,50 +9,71 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
-public class SubMarineGame {
+public class SubMarineGame<T> {
 
     private List<HashSet<Index>> sets;
     private ReadWriteLock readWriteLock;
     private Future<Integer> futureStock ;
     private ThreadPoolExecutor threadPoolExecutor;
     private List<List> listGroups;
+    private List<Callable<T>> futureTasksList;
 
 
     public SubMarineGame(Matrix generateMatrix) {
         this.sets = generateMatrix.findGroups(generateMatrix);
         listGroups = generateMatrix.convertHashToList(this.sets);
-
+        futureTasksList = new ArrayList<>();
         readWriteLock = new ReentrantReadWriteLock();
     }
 
     public Integer checkIfSubMarine() throws Exception {
         //System.out.println(listGroups);
-        readWriteLock.writeLock().lock();
         List<Object> data = new ArrayList<>();
         data = listGroups.stream().collect(Collectors.toList());
         ArrayList<Index> indices;
         Integer countShip = 0;
-        threadPoolExecutor = new ThreadPoolExecutor(2,5,10, TimeUnit.SECONDS,new LinkedBlockingDeque<>());
+        threadPoolExecutor = new ThreadPoolExecutor(4,7,10, TimeUnit.SECONDS,new LinkedBlockingDeque<>());
 
         try {
             for (int i = 0; i < data.size(); i++) {
 
                 indices = (ArrayList<Index>) data.get(i);
+<<<<<<< Updated upstream
 
                 futureStock = threadPoolExecutor.submit(runSets(indices));
+=======
+                //futureStock = threadPoolExecutor.submit(runSets(indices));
+                futureTasksList.add(runSets(indices));
+>>>>>>> Stashed changes
 
-                //System.out.println("Future getting : " + futureStock.get() + " is Done ? " + futureStock.isDone() );
-                countShip +=futureStock.get();
             }
         }catch (ClassCastException e){
             System.out.println("Error");
         }
 
+        try {
+            // Now invoke all of the tasks
+            //make them run parallel
+            List<Future<T>> allResultsAsFuture = threadPoolExecutor.invokeAll(futureTasksList);
+
+            for (Future<T> currResult: allResultsAsFuture) {
+                readWriteLock.writeLock().lock();
+                countShip += (Integer)currResult.get();
+                readWriteLock.writeLock().unlock();
+
+                //System.out.println("Future getting : " + futureStock.get() + " is Done ? " + futureStock.isDone() );
+
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            // Handle the exception here.. Somehow...
+            e.printStackTrace();
+        }
+
+        //countShip +=futureStock.get();
+
         threadPoolExecutor.shutdown();
 
         if (countShip == listGroups.size()){
-            readWriteLock.writeLock().unlock();
-
             return countShip;
         }
         else {
@@ -80,10 +101,10 @@ public class SubMarineGame {
                 }
             }
             if (col*row == indices.size() && indices.size() != 1 ){
-                //System.out.println( "Ships is calculate on Thread : " + Thread.currentThread().getName());
+                System.out.println( "Ships is calculate on Thread : " + Thread.currentThread().getName());
                 return 1;
             }
-            //System.out.println("Row is : " + row + " and Col is : " + col + " Threads : " + Thread.currentThread().getName());
+            System.out.println("Row is : " + row + " and Col is : " + col + " Threads : " + Thread.currentThread().getName());
             return 0;
         });
 
@@ -91,7 +112,7 @@ public class SubMarineGame {
     }
 
     public void drian (){
-        threadPoolExecutor.shutdownNow();
+        threadPoolExecutor = null;
     }
 
 
@@ -100,8 +121,8 @@ public class SubMarineGame {
         int[][] source = {
                 {1, 1, 1, 0, 1, 0, 1},
                 {0, 0, 0, 0, 1, 0, 1},
-                {1, 0, 1, 0, 0, 0, 1},
-                {1, 0, 1, 0, 0, 0, 1},
+                {1, 0, 0, 0, 0, 0, 1},
+                {1, 0, 0, 0, 0, 0, 1},
                 {1, 0, 0, 1, 1, 0, 1}
 
         };
