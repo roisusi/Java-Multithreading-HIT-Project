@@ -118,7 +118,7 @@ public class Client {
                 System.out.println("Hello and welcome to Matrix-Graphs games\n" +
                         "First lets build matrix for our game:\n" +
                         "Select Matrix from the list or you can choose option 9 for a random one\n" +
-                        "If you choose matrix 6-8 you will jump to Q4" +
+                        "If you choose matrix 6-8 you will jump to Q4\n" +
                         "1.\n" + buildMatrix1 + "\n" +
                         "2.\n" + buildMatrix2 + "\n" +
                         "3.\n" + buildMatrix3 + "\n" +
