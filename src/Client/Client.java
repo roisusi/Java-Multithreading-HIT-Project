@@ -4,11 +4,13 @@ import Server.Index;
 import Server.Matrix;
 import Server.SubMarineGame;
 
+import javax.xml.transform.sax.SAXSource;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 
@@ -34,106 +36,318 @@ public class Client {
 
 
         Socket socket = new Socket("127.0.0.1", 8010);
-        System.out.println("client: Socket was created");
         ObjectOutputStream toServer = new ObjectOutputStream(socket.getOutputStream());
         ObjectInputStream fromServer = new ObjectInputStream(socket.getInputStream());
+        //System.out.println("client: Socket was created");
+
         boolean stop = false;
+        boolean showMenu = true;
+        Matrix matrix = new Matrix();
+        Scanner scannerMatrix;
+        String readFromUser = "";
+
+        // sending #1 matrix
+        int[][] matrix1 = {
+                {0, 0, 1},
+                {1, 0, 1},
+                {1, 0, 0}
+        };
+
+        int[][] matrix2 = {
+                {1, 1, 1, 0, 1, 0, 1},
+                {0, 0, 0, 0, 1, 0, 1},
+                {1, 0, 1, 0, 0, 0, 1},
+                {1, 0, 1, 0, 0, 0, 1},
+                {1, 0, 0, 1, 1, 0, 1}
+
+        };
+        int[][] matrix3 = {
+                {1, 0, 0, 1, 1},
+                {1, 0, 0, 1, 1},
+                {1, 0, 0, 1, 1},
+                {1, 0, 0, 1, 1},
+                {1, 0, 0, 1, 1}
+
+        };
+        int[][] matrix4 = {
+                {1, 1, 0, 1, 1},
+                {0, 0, 0, 1, 1},
+                {1, 1, 0, 1, 1}
+        };
+        int[][] matrix5NotGood = {
+                {1, 1, 0, 1, 1},
+                {0, 0, 0, 1, 1},
+                {1, 0, 0, 1, 1}
+
+        };
+        int[][] matrix6 = {
+                {100,100, 100},
+                {500, 900, 300}
+        };
+        int[][] matrix7 = {
+                {-1, 1,-1},
+                {5, 6, 1},
+                {8, 1, 3}
+        };
+        int[][] matrix8 = {
+                {3, 7, 0, 10, 1},
+                {5, 16, 0, 20, 3},
+                {6, 7, 5, 1, 11},
+                {9, 18, 6, 15, 11}
+        };
+
+
+        Matrix buildMatrix1 = new Matrix(matrix1);
+        Matrix buildMatrix2 = new Matrix(matrix2);
+        Matrix buildMatrix3 = new Matrix(matrix3);
+        Matrix buildMatrix4 = new Matrix(matrix4);
+        Matrix buildMatrix5 = new Matrix(matrix5NotGood);
+        Matrix buildMatrix6 = new Matrix(matrix6);
+        Matrix buildMatrix7 = new Matrix(matrix7);
+        Matrix buildMatrix8 = new Matrix(matrix8);
 
 
         while (!stop) {
 
 
+            //System.out.println("Please enter one of the following: matrix,reachables,neighbors");
 
-            // sending #1 matrix
-            int[][] source = {
-                    {0, 0, 1},
-                    {1, 0, 1},
-                    {1, 0, 0}
-            };
+            if (showMenu) {
+                System.out.println("Hello and welcome to Matrix-Graphs games\n" +
+                        "First lets build matrix for our game:\n" +
+                        "Select Matrix from the list or you can choose option 6 for a random one\n" +
+                        "1.\n" + buildMatrix1 + "\n" +
+                        "2.\n" + buildMatrix2 + "\n" +
+                        "3.\n" + buildMatrix3 + "\n" +
+                        "4.\n" + buildMatrix4 + "\n" +
+                        "5.\n" + buildMatrix5 + "\n" +
+                        "6.\n" + buildMatrix6 + "\n" +
+                        "7.\n" + buildMatrix7 + "\n" +
+                        "8.\n" + buildMatrix8 + "\n" +
+                        "9.\nBuild your own Matrix\n");
 
-            Matrix matrix = new Matrix(source);
-            System.out.println("Please enter one of the following: matrix,reachables,neighbors");
-            Scanner scanner = new Scanner(System.in);
-            String readFromUser = scanner.nextLine();
-            //send "matrix" command then write 2d array to socket
+                scannerMatrix = new Scanner(System.in);
+                readFromUser = scannerMatrix.nextLine();
+                //send "matrix" command then write 2d array to socket
 
-            switch (readFromUser) {
+                switch (readFromUser) {
+                    case "1": {
+                        toServer.writeObject("matrix");
+                        toServer.writeObject(matrix1);
+                        matrix = (Matrix) fromServer.readObject();
+                        System.out.println("you Chose : \n" + matrix);
+                        showMenu = false;
+                        break;
+                    }
+                    case "2": {
+                        toServer.writeObject("matrix");
+                        toServer.writeObject(matrix2);
+                        matrix = (Matrix) fromServer.readObject();
+                        System.out.println("you Chose : \n" + matrix);
+                        showMenu = false;
+                        break;
+                    }
+                    case "3": {
+                        toServer.writeObject("matrix");
+                        toServer.writeObject(matrix3);
+                        matrix = (Matrix) fromServer.readObject();
+                        System.out.println("you Chose : \n" + matrix);
+                        showMenu = false;
+                        break;
+                    }
+                    case "4": {
+                        toServer.writeObject("matrix");
+                        toServer.writeObject(matrix4);
+                        matrix = (Matrix) fromServer.readObject();
+                        System.out.println("you Chose : \n" + matrix);
+                        showMenu = false;
+                        break;
+                    }
+                    case "5": {
+                        toServer.writeObject("matrix");
+                        toServer.writeObject(matrix5NotGood);
+                        matrix = (Matrix) fromServer.readObject();
+                        System.out.println("you Chose : \n" + matrix);
+                        showMenu = false;
+                        break;
+                    }
+                    case "6": {
+                        toServer.writeObject("matrix");
+                        toServer.writeObject(matrix6);
+                        matrix = (Matrix) fromServer.readObject();
+                        System.out.println("you Chose : \n" + matrix);
+                        showMenu = false;
+                        break;
+                    }
+                    case "7": {
+                        toServer.writeObject("matrix");
+                        toServer.writeObject(matrix7);
+                        matrix = (Matrix) fromServer.readObject();
+                        System.out.println("you Chose : \n" + matrix);
+                        showMenu = false;
+                        break;
+                    }
+                    case "8": {
+                        toServer.writeObject("matrix");
+                        toServer.writeObject(matrix8);
+                        matrix = (Matrix) fromServer.readObject();
+                        System.out.println("you Chose : \n" + matrix);
+                        showMenu = false;
+                        break;
+                    }
+                    case "9": {
+                        boolean isNumberOK = true;
+                        System.out.println("Build you own Matrix until 1000X1000");
+                        toServer.writeObject("buildRandomMatrix");
 
-                case "matrix" : {
-                    toServer.writeObject("matrix");
-                    toServer.writeObject(source);
-                    break;
+                        while (isNumberOK) {
+                            System.out.println("Please Enter Columns");
+                            readFromUser = scannerMatrix.nextLine();
+                            isNumberOK = catchNotANumber(readFromUser);
+                            if (!isNumberOK) {
+                                toServer.writeObject(Integer.parseInt(readFromUser));
+                            } else continue;
+                            System.out.println("Please Enter Rows");
+                            readFromUser = scannerMatrix.nextLine();
+                            isNumberOK = catchNotANumber(readFromUser);
+                            if (!isNumberOK) {
+                                toServer.writeObject(Integer.parseInt(readFromUser));
+                            } else continue;
+                        }
+                        matrix = (Matrix) fromServer.readObject();
+                        System.out.println("Your Random Matrix is : \n" + matrix);
+                        showMenu = false;
+                        break;
+                    }
+                    default:
+                        showMenu = true;
+
                 }
-                case "reachables" :{
-                    //send "reachables" command then write an index to socket
-                    toServer.writeObject("reachables");
-                    toServer.writeObject(new Index(1, 1));
+            }
 
-                    // get reachable indices as list
-                    List<Index> reachables =
-                            new ArrayList<Index>((List<Index>) fromServer.readObject());
-                    System.out.println("from client - Reachable Indices are:  " + reachables);
-                    break;
-                }
-                case "neighbors" :{
-                    //send "neighbors" command then write an index to socket
-                    toServer.writeObject("neighbors");
-                    toServer.writeObject(new Index(1, 1));
 
-                    // get neighboring indices as list
-                    List<Index> AdjacentIndices =
-                            new ArrayList<Index>((List<Index>) fromServer.readObject());
-                    System.out.println("from client - Neighboring Indices are: " + AdjacentIndices);
-                    break;
-                }
+            if (showMenu == false) {
+                System.out.println("Please select What Game you want to play with the ");
+                Scanner scannerOption = new Scanner(System.in);
+                readFromUser = scannerOption.nextLine();
 
-                case "3" :{
-                    //send "neighbors" command then write an index to socket
-                    toServer.writeObject("subGame");
-                    //toServer.writeObject(new Matrix(source));
+                switch (readFromUser) {
+                    case "1": {
+                        toServer.writeObject("findPaths");
+                        toServer.writeObject(matrix);
+                        Object paths = (List<HashSet<Index>>) fromServer.readObject();
+                        System.out.println("The Indices of: ");
+                        if (matrix != null)
+                            matrix.printMatrix();
+                        System.out.println("is " + paths);
+                        break;
+                    }
+                    case "2": {
+                        System.out.println();
+                        System.out.println("For shortest path we will use spacial nXn Matrix up to 50x50");
+                        if (matrix.getColNumber() != matrix.getRowNumber() || matrix.getRowNumber() > 50 || matrix.getColNumber() > 50) {
+                            System.out.println("Sorry your Matrix is not nXn or above 50x50");
+                            break;
+                        }
+                        System.out.println();
+                        toServer.writeObject("findIndices");
+                        toServer.writeObject(matrix);
+                        Object integer = fromServer.readObject();
+//                        System.out.println("Number of Ships in");
+//                        if (matrix != null)
+//                            matrix.printMatrix();
+                        System.out.println("is " + integer);
+                        break;
+                    }
 
-                    // get neighboring indices as list
-//                    List<Index> AdjacentIndices =
-//                            new ArrayList<Index>((List<Index>) fromServer.readObject());
-//                    System.out.println("from client - Neighboring Indices are: " + AdjacentIndices);
-                    Object integer = fromServer.readObject();
-                    System.out.println("Number of Ships in");
-                    matrix.printMatrix();
-                    System.out.println("is " + integer);
-                    break;
-                }
-                case "cheapest path": {
-                    System.out.println("type source and destination index:");
-                    toServer.writeObject("cheapest path");
+                    case "3": {
+                        toServer.writeObject("subGame");
+                        toServer.writeObject(matrix);
+                        Object integer = fromServer.readObject();
+                        System.out.println("Number of Ships in");
+                        if (matrix != null)
+                            matrix.printMatrix();
+                        System.out.println("is " + integer);
+                        break;
+                    }
+                    case "4": {
+                        System.out.println("type source and destination index:");
+                        toServer.writeObject("cheapest path");
+                        toServer.writeObject(matrix);
+                        //send start and dest index that scanned from user
+                        toServer.writeObject(readIndex());
+                        toServer.writeObject(readIndex());
+//                        toServer.writeObject(new Index(1, 0));
+//                        toServer.writeObject(new Index(2, 2));
 
-                    //send start and dest index that scanned from user
-//                    toServer.writeObject(readIndex());
-//                    toServer.writeObject(readIndex());
-                    toServer.writeObject(new Index(1, 0));
-                    toServer.writeObject(new Index(2, 2));
+                        // get cheapest path as list
+                        List<Index> cheapest =
+                                new ArrayList<Index>((List<Index>) fromServer.readObject());
+                        System.out.println("from client - Cheapest Path is: " + cheapest);
+                        break;
+                    }
+                    case "5": {
+                        showMenu = true;
+                        break;
+                    }
+                    case "stop": {
+                        toServer.writeObject("stop");
+                        fromServer.close();
+                        toServer.close();
+                        socket.close();
+                        stop = true;
+                        break;
+                    }
+                    default:
+                        System.out.println("Please Select from the Menu or \"5\" to choose different Matrix or \"stop\" to exit");
 
-                    // get cheapest path as list
-                    List<Index> cheapest =
-                            new ArrayList<Index>((List<Index>) fromServer.readObject());
-                    System.out.println("from client - Cheapest Path is: " + cheapest);
-                    break;
-                }
-
-                case "stop" :{
-                    toServer.writeObject("stop");
-                    fromServer.close();
-                    toServer.close();
-                    socket.close();
-                    stop = true;
-                    break;
                 }
 
             }
 
+            System.out.println("client: Closed operational socket");
+
+
+        }
+    }
+
+    public static boolean catchNotANumber(String readFromUser){
+        boolean isNumberOK = true;
+        try {
+            Integer intValue = Integer.parseInt(readFromUser);
+            Exception exception = new Exception();
+            if (intValue > 1000 || intValue < 2) throw exception;
+            isNumberOK = false;
+        } catch (NumberFormatException e) {
+            System.out.println("Input is not a number");
+        }catch (Exception e){
+            System.out.println("Values need to be positive and from 2 to 1000");
         }
 
-        System.out.println("client: Closed operational socket");
+        return isNumberOK;
+    }
 
+    public static Index readIndex(){
+        String input = null;
+        String[] token;
+        int x;
+        int y;
 
+        Scanner in = null;
+        try {
+            in = new Scanner(System.in);
+            input = in.nextLine();
+
+        }
+        catch (Exception e) {
+        }
+        finally {
+            token = input.split("\\(|,|\\)");
+            x = Integer.parseInt(token[0]);
+            y = Integer.parseInt(token[1]);
+            in.close();
+            //.writeObject(new Index(1,1));
+        }
+        return new Index(x,y);
     }
 }

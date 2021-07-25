@@ -3,8 +3,11 @@ package Server;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-public class CheapestPathMatrix implements CheapestPath<Index> {
+/**
+ * This class implements adapter/wrapper/decorator design pattern implements Traversable interface{@link Traversable}
+ * containing matrix {@link Matrix}, start index , destination index {@link Index}
+ */
+public class CheapestPathMatrix implements Traversable<Index> {
     protected final Matrix matrix;
     protected Index strIndex;
     protected Index destIndex;
@@ -25,9 +28,13 @@ public class CheapestPathMatrix implements CheapestPath<Index> {
 
     public void setDestIndex(Index destIndex) { this.destIndex = destIndex; }
 
-
+    /**
+     * This method gets the start index predefined in class, as node{@link Node} and setting his value.
+     * @return start index as Node {@link Node}
+     * @throws NullPointerException
+     */
     @Override
-    public Node<Index> getStart() throws NullPointerException{
+    public Node<Index> getOrigin() throws NullPointerException{
         if (this.strIndex == null) throw new NullPointerException("start index is not initialized");
         Node n = new Node<>(this.strIndex);
         n.setValue(matrix.getValue(strIndex));
@@ -35,6 +42,14 @@ public class CheapestPathMatrix implements CheapestPath<Index> {
     }
 
     @Override
+    public Collection<Node<Index>> getReachableNodes(Node<Index> someNode) {
+        return null;
+    }
+
+    /**
+     * This method gets the predefined destination index in the class, and setting his value.
+     * @return destination index as Node {@link Node}
+     */
     public Node<Index> getDestination() {
         if (this.destIndex == null) throw new NullPointerException("destination index is not initialized");
         Node n = new Node<>(this.destIndex);
@@ -42,8 +57,11 @@ public class CheapestPathMatrix implements CheapestPath<Index> {
         return n;
     }
 
-
-    @Override
+    /**
+     *This method gets neighboring nodes(up,down,right,left) for a given node and setting their values from matrix and their parent node as the given node.
+     * @param someNode gets a node containing index {@link Index}
+     * @return ArrayList of neighboring nodes initialized with values and parent node.
+     */
     public Collection<Node<Index>> getNeighborsNodes(Node<Index> someNode) {
         List<Node<Index>> reachableIndex = new ArrayList<>();
         for (Index index : this.matrix.getNeighbors(someNode.getData())) {
@@ -58,10 +76,15 @@ public class CheapestPathMatrix implements CheapestPath<Index> {
         return this.matrix.getPrimitiveMatrix().length;
     }
 
-    @Override
+
+    /**
+     * This method takes the matrix {@link Matrix} in the class and sends it back as list of nodes{@link Node}
+     * initialized with values from matrix.
+     * @param someNode gets a node containing index {@link Index} and setting it to be the first in the list.
+     * @return ArrayList of nodes initialized with values related to indexes of the matrix.
+     */
     public Collection<Node<Index>> getMatrixNodes(Node<Index> someNode) {
         List<Node<Index>> allIndex = new ArrayList<>();
-        List <Index> temp = new ArrayList<>();
 
         someNode.setValue(matrix.getValue(someNode.getData()));
         allIndex.add(someNode);
