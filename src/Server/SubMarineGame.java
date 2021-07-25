@@ -18,9 +18,9 @@ public class SubMarineGame<T> {
 
 
     /**
-     * Constractor to initiate SubMarineGame, The Matrix that sent creating a Hashset
-     * drived from DFS Traversal findGroups() and save the results to list of indices
-     * @param generateMatrix get a Matrix to work with
+     * Constractor to initiate SubMarineGame,The Matrix that sent creating a Hashset
+     * drived from DFS Traversal findGroups() {@link Matrix} and save the results to list of indices
+     * @param generateMatrix get a Matrix {@link Matrix} to work with
      */
     public SubMarineGame(Matrix generateMatrix) {
         this.sets = generateMatrix.findGroups(generateMatrix);
