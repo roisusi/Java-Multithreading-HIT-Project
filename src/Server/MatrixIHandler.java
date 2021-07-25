@@ -48,7 +48,7 @@ public class MatrixIHandler implements IHandler {
                     if (matrix!=null){
                         try {
                             SubMarineGame subMarineGame = new SubMarineGame(matrix);
-                            int numOfShip = subMarineGame.checkIfSubMarine();
+                            int numOfShip = subMarineGame.getSubMarine();
                             objectOutputStream.writeObject(numOfShip);
                             subMarineGame.drian();
                         }catch (Exception e){
