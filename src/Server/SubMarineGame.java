@@ -8,6 +8,11 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
+/**
+ * This Class represent a SubMarineGame it takes :
+ * 1. Matrix nXm and by DFS algorithm get indices and save it to a set
+ *
+ */
 public class SubMarineGame<T> {
 
     private List<HashSet<Index>> sets;

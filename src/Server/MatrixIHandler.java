@@ -1,5 +1,11 @@
 package Server;
 
+import Client.Client;
+
+/**
+This Class gets jobs from the server as sent from the client and invvoke them
+ */
+
 import java.io.*;
 import java.util.List;
 
@@ -13,6 +19,19 @@ public class MatrixIHandler implements IHandler {
         // ObjectInputStream is a wrapper (decorator) - wraps an OutputStream and add functionality
         // treats data as primitives/objects
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(toClient);
+
+
+        /* Client can choose a job from the menu what he wish do to he send a objectInputStream using a Sting
+            the matrix contain 1 and 0 except Task 4 which has random positive numbers as follow :
+            1. matrix - build a matrix using in-client static Matrix
+            2. buildRandomMatrix - build Client-Own random Matrix up to 1000X1000
+            3. findIndices - Task 1 - find indices of a Matrix
+            4. findPaths - Task 2 - find the shortest path of Matrix
+            5. subGame - Task 3 - find a submarine in a matrix
+            6. cheapest path - Task 4 - find Cheapest path on regular matrix that the cells contain a wight to travel
+
+        */
+
 
         boolean doWork = true;
         while(doWork){
