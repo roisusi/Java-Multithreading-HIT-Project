@@ -52,7 +52,6 @@ public class SubMarineGame<T> {
 
         try {
             for (int i = 0; i < data.size(); i++) {
-
                 //Start adding all the tasks to list of tasks to run
                 //them together
                 indices = (ArrayList<Index>) data.get(i);

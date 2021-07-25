@@ -11,7 +11,7 @@ public class Matrix implements Serializable {
     int[][] primitiveMatrix;
 
     public Matrix(){
-
+    // Holds Empty for just initialization
     }
 
     public Matrix(int[][] oArray){

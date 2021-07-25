@@ -1,7 +1,7 @@
 package Server;
 
 /**
- * a class that holds the distance of a vertex from source vertex and the parent vertex that is previous in the path to the current one
+ * a Helper class that holds the distance of a vertex from source vertex and the parent vertex that is previous in the path to the current one
  * this class is a helper for the map Map<currentVertex,[distanceFromSource,previousVertex]>
  */
 public class DistFromSource {

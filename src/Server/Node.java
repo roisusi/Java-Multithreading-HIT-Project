@@ -50,6 +50,11 @@ public class Node<T> {
         this.parent = parent;
     }
 
+    /**
+     * This Method return a value of index in the matrix
+     * @return Value of index in the matrix as integer
+     */
+
     public Integer getValue() {
         return value;
     }
@@ -57,11 +62,11 @@ public class Node<T> {
     public void setValue(int value) { this.value = value; }
 
     /*
-This is used when accessing objects multiple times with comparisons,
-when using a HashTable
-Set<Node<T>> finished - this will work only if concrete object are different
-Node<Index> Node<Coordinate> Node<ComputerLocation>
-Node<Index> Node<Index> Node<Index>
+    This is used when accessing objects multiple times with comparisons,
+    when using a HashTable
+    Set<Node<T>> finished - this will work only if concrete object are different
+    Node<Index> Node<Coordinate> Node<ComputerLocation>
+    Node<Index> Node<Index> Node<Index>
  */
     @Override
     public int hashCode() {

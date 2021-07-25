@@ -12,18 +12,18 @@ public class DFSvisit<T> {
     public DFSvisit(){
         workingStack = new Stack<>();
         finished = new HashSet<>();
-        // {3,1,2}
+
     }
     /*
-Push to stack the starting node of our graph V
-While stack is not empty: // there are nodes to handle V
+    Push to stack the starting node of our graph V
+    While stack is not empty: // there are nodes to handle V
     removed = pop operation V
     insert to finish set V
     invoke getReachableNodes on the removed node V
     For each reachable node:
         if the current reachable node is not in finished set && working stack
         push to stack
- */
+     */
     public Collection<T> traverse(Traversable<T> partOfGraph){
         workingStack.push(partOfGraph.getOrigin());
         while(!workingStack.isEmpty()){
@@ -43,20 +43,5 @@ While stack is not empty: // there are nodes to handle V
         }
         return blackList;
     }
-   /*
-   [1,0,1,1]
-   [1,1,0,1]
-
-   Reachables
-
-   WorkingStack
-
-   FinishedSet
-   (0,0)
-   (1,0)
-   (1,1)
-    */
-
-
 
 }
