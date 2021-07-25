@@ -9,8 +9,8 @@
 2. Make input for entering wights matrix V
 3. Java Docs for : <br>
  3.1 Bellman.java V<br>
- 3.2 CheapestPath.java <br>
- 3.3 DistFromSource.java <br>
+ 3.2 CheapestPath.java V<br>
+ 3.3 DistFromSource.java V<br>
 
  <b >Roi : </b> <br>
 1. Java Docs for : <br>
