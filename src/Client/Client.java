@@ -45,6 +45,7 @@ public class Client {
         Matrix matrix = new Matrix();
         Scanner scannerMatrix;
         String readFromUser = "";
+        boolean Q4Marked= false;
 
         // sending #1 matrix
         int[][] matrix1 = {
@@ -117,6 +118,7 @@ public class Client {
                 System.out.println("Hello and welcome to Matrix-Graphs games\n" +
                         "First lets build matrix for our game:\n" +
                         "Select Matrix from the list or you can choose option 9 for a random one\n" +
+                        "If you choose matrix 6-8 you will jump to Q4" +
                         "1.\n" + buildMatrix1 + "\n" +
                         "2.\n" + buildMatrix2 + "\n" +
                         "3.\n" + buildMatrix3 + "\n" +
@@ -178,6 +180,7 @@ public class Client {
                         matrix = (Matrix) fromServer.readObject();
                         System.out.println("you Chose : \n" + matrix);
                         showMenu = false;
+                        Q4Marked = true;
                         break;
                     }
                     case "7": {
@@ -186,6 +189,8 @@ public class Client {
                         matrix = (Matrix) fromServer.readObject();
                         System.out.println("you Chose : \n" + matrix);
                         showMenu = false;
+                        Q4Marked = true;
+
                         break;
                     }
                     case "8": {
@@ -194,6 +199,8 @@ public class Client {
                         matrix = (Matrix) fromServer.readObject();
                         System.out.println("you Chose : \n" + matrix);
                         showMenu = false;
+                        Q4Marked = true;
+
                         break;
                     }
                     case "9": {
@@ -228,9 +235,13 @@ public class Client {
 
 
             if (showMenu == false) {
-                System.out.println("Please select What Game you want to play with the ");
-                Scanner scannerOption = new Scanner(System.in);
-                readFromUser = scannerOption.nextLine();
+                if(Q4Marked == false) {
+                    System.out.println("Please select What Game you want to play with the ");
+                    Scanner scannerOption = new Scanner(System.in);
+                    readFromUser = scannerOption.nextLine();
+                }else {
+                    readFromUser = "4";
+                }
 
                 switch (readFromUser) {
                     case "1": {
@@ -272,6 +283,7 @@ public class Client {
                         break;
                     }
                     case "4": {
+                        if(Q4Marked == true){
                         System.out.println("type source and destination index:");
                         toServer.writeObject("cheapest path");
                         toServer.writeObject(matrix);
@@ -284,6 +296,10 @@ public class Client {
                         List<Index> cheapest =
                                 new ArrayList<Index>((List<Index>) fromServer.readObject());
                         System.out.println("from client - Cheapest Path is: " + cheapest);
+                        }else {
+                            System.out.println("Sorry you can select Task 4 with that matrix");
+                        }
+
                         break;
                     }
                     case "5": {
@@ -303,12 +319,7 @@ public class Client {
                         System.out.println("Please Select from the Menu or \"5\" to choose different Matrix or \"stop\" to exit");
 
                 }
-
             }
-
-            System.out.println("client: Closed operational socket");
-
-
         }
     }
 
