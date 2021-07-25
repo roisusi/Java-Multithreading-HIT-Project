@@ -50,9 +50,10 @@ public class MatrixIHandler implements IHandler {
                     break;
                 }
                 case "findIndices":{
+                    //Need to inset index and a msg to say that there is not a path
                     matrix = (Matrix)objectInputStream.readObject();
                     matrix.printMatrix();
-                    List<List<Index>> paths = matrix.findPaths(matrix,new Index(5,5),new Index(2,2));
+                    List<List<Index>> paths = matrix.findPaths(matrix,new Index(1,4),new Index(4,0));
                     System.out.println(paths);
                     objectOutputStream.writeObject(matrix.printPath(paths));
                     break;

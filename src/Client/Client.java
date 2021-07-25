@@ -63,11 +63,11 @@ public class Client {
 
         };
         int[][] matrix3 = {
+                {1, 0, 1, 0, 0},
+                {1, 0, 1, 0, 1},
                 {1, 0, 0, 1, 1},
-                {1, 0, 0, 1, 1},
-                {1, 0, 0, 1, 1},
-                {1, 0, 0, 1, 1},
-                {1, 0, 0, 1, 1}
+                {0, 0, 1, 0, 1},
+                {1, 1, 1, 0, 0}
 
         };
         int[][] matrix4 = {
@@ -265,9 +265,6 @@ public class Client {
                         toServer.writeObject("findIndices");
                         toServer.writeObject(matrix);
                         Object integer = fromServer.readObject();
-//                        System.out.println("Number of Ships in");
-//                        if (matrix != null)
-//                            matrix.printMatrix();
                         System.out.println("is " + integer);
                         break;
                     }
