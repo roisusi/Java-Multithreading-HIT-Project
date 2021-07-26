@@ -334,10 +334,10 @@ public class Client {
 
                         System.out.print("Enter 2 numbers for start index:\n");
                         // This method reads the number provided using keyboard
-                        int x = getNum();
-                        int y = getNum();
+                        x1 = getNum();
+                        y1 = getNum();
                         //send start index that scanned from user
-                        toServer.writeObject(new Index(x,y));
+                        toServer.writeObject(new Index(x1,y1));
                         System.out.print("Enter 2 numbers for destination index:\n");
                         x2 = getNum();
                         y2 = getNum();
