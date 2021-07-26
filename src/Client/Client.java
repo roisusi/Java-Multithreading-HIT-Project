@@ -285,10 +285,17 @@ public class Client {
                         toServer.writeObject("cheapest path");
                         toServer.writeObject(matrix);
 
-                        //send start and dest index that scanned from user
-                        toServer.writeObject(readIndex());
-                        toServer.writeObject(readIndex());
-
+                        System.out.print("Enter 2 numbers for start index: ");
+                        // This method reads the number provided using keyboard
+                        int x = getNum();
+                        int y = getNum();
+                        //send start index that scanned from user
+                        toServer.writeObject(new Index(x,y));
+                        System.out.print("Enter 2 numbers for destination index: ");
+                        int x2 = getNum();
+                        int y2 = getNum();
+                        //send dest index that scanned from user
+                        toServer.writeObject(new Index(x2,y2));
                         // get cheapest path as list
                         List<Index> cheapest =
                                 new ArrayList<Index>((List<Index>) fromServer.readObject());
@@ -336,27 +343,17 @@ public class Client {
         return isNumberOK;
     }
 
-    public static Index readIndex(){
-        String input = null;
-        String[] token;
-        int x;
-        int y;
-
-        Scanner in = null;
-        try {
-            in = new Scanner(System.in);
-            input = in.nextLine();
-
+    public static int getNum(){
+        Scanner scan = new Scanner(System.in);
+        int cn = 0;
+        while (true) {
+            try {
+                cn = Integer.parseInt(scan.nextLine());
+                return cn;
+            } catch(Exception e) {
+                System.out.println("not a number.");
+            }
         }
-        catch (Exception e) {
-        }
-        finally {
-            token = input.split("\\(|,|\\)");
-            x = Integer.parseInt(token[0]);
-            y = Integer.parseInt(token[1]);
-            in.close();
-        }
-        return new Index(x,y);
     }
 
 }
