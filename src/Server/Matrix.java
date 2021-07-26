@@ -128,6 +128,13 @@ public class Matrix implements Serializable {
      * @param matrix - standard matrix we receive
      * @return list of HashSets<Index>
      */
+
+
+    //----------------//
+    // --- Task 1 --- //
+    //----------------//
+
+
     public static List<HashSet<Index>> findGroups(Matrix matrix) {
         List<Index> allUnVisitedItems = new ArrayList<>(); // Indices = 1 from the matrix we didnt visit
         List<Index> returnedGraphs;   // List of graphs return from DFSVisit
@@ -153,53 +160,28 @@ public class Matrix implements Serializable {
         }
 
         // running on every index from allUnVisitedItems (equals to 1)
-
-//        //TODO Threads
-//        for (Index item : allUnVisitedItems) {
-//
-//            // for each index equals to 1, check his neighbours and creating List of tying components
-//            returnedGraphs = (List<Index>) DfsVisit.traverse(new TraversableMatrix(matrix, item));
-//
-//            // sorting every tying components by row then column
-//            returnedGraphs.sort(Comparator.comparing(Index::getRow).thenComparing(Index::getColumn));
-//
-//            // collect each tying component to list of lists
-//            savingEachGraph.add(new HashSet<>(returnedGraphs));
-//        }
-//        //TODO Threads
-
-
         threadPoolExecutor = new ThreadPoolExecutor(4,7,10, TimeUnit.SECONDS,new LinkedBlockingDeque<>());
 
-
         //running on every index from allUnVisitedItems (equals to 1)
-        //TODO Threads
         futureTasksList = new ArrayList<>();
         Callable<List<Index>> callable;
         for (Index item : allUnVisitedItems) {
-            // for each index equals to 1, check his neighbours and creating List of tying components
-            //returnedGraphs = (List<Index>) DfsVisit.traverse(new TraversableMatrix(matrix, item));
-            //readWriteLock.readLock().lock();
 
+            // for each index equals to 1, check his neighbours and creating List of tying components
+            // and add all the tasks to future List
             callable = () -> (List<Index>)threadLocalDfsVisit.traverse(new TraversableMatrix(matrix, item));
             futureTasksList.add(callable);
-            //readWriteLock.readLock().unlock();
 
         }
 
+        //Staring to execute the tasks in a parallel
         try {
             List<Future<List<Index>>> allResultsAsFuture = threadPoolExecutor.invokeAll(futureTasksList);
             for (Future<List<Index>> currResult: allResultsAsFuture) {
-                //readWriteLock.writeLock().lock();
-
                 returnedGraphs = (List<Index>)currResult.get();
 
-                //sorting every tying components by row then column
-//                returnedGraphs.sort(Comparator.comparing(Index::getRow).thenComparing(Index::getColumn));
-
-                //collect each tying component to list of lists
+                //save many links in savingEachGraph (may be more the same links
                 savingEachGraph.add(new HashSet<>(returnedGraphs));
-                //readWriteLock.writeLock().unlock();
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -207,8 +189,6 @@ public class Matrix implements Serializable {
             e.printStackTrace();
         }
 
-
-        //TODO Threads
 
         /**
          * running on every list(bondage components) in "savingEachGraph" and deleting duplicate indices
@@ -247,6 +227,10 @@ public class Matrix implements Serializable {
         List<HashSet<Index>> sortFinalCC = new ArrayList(savingEachGraph);  // List of hashset<Index>
         return sortFinalCC;
     }
+
+    //----------------//
+    // --- Task 2 --- //
+    //----------------//
 
     /**
      * scanning index neighbors by diagonal

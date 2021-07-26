@@ -240,7 +240,8 @@ public class Client {
                             "Task 1 - Find Paths of all the 1 in the Matrix\n" +
                             "Task 2 - Find the shortest path between 2 indexes \n" +
                             "Task 3 - Find how much submarines you have in your Matrix (-1 is none)\n" +
-                            "Task 4 - Find the lightest path between 2 indexes\n");
+                            "Task 4 - Find the lightest path between 2 indexes\n" +
+                            "Click 5 to return to choose Matrix\n");
                     Scanner scannerOption = new Scanner(System.in);
                     readFromUser = scannerOption.nextLine();
                 }else {
