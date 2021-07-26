@@ -146,7 +146,7 @@ public class TcpServer {
     }
 
     public static void main(String[] args) {
-        TcpServer matrixServer = new TcpServer(8010);
+        TcpServer matrixServer = new TcpServer(8020);
         matrixServer.supportClients(new MatrixIHandler());
 
     }

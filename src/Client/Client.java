@@ -33,7 +33,7 @@ public class Client {
          */
 
 
-        Socket socket = new Socket("127.0.0.1", 8010);
+        Socket socket = new Socket("127.0.0.1", 8020);
         ObjectOutputStream toServer = new ObjectOutputStream(socket.getOutputStream());
         ObjectInputStream fromServer = new ObjectInputStream(socket.getInputStream());
         //System.out.println("client: Socket was created");
@@ -44,6 +44,9 @@ public class Client {
         Scanner scannerMatrix;
         String readFromUser = "";
         boolean Q4Marked= false;
+        int x1=0,x2=0,y1=0,y2=0;
+        Index index1 = new Index(0,0);
+        Index index2 = new Index(0,0);
 
         // sending #1 matrix
         int[][] matrix1 = {
@@ -205,17 +208,16 @@ public class Client {
                         boolean isNumberOK = true;
                         System.out.println("Build you own Matrix until 1000X1000");
                         toServer.writeObject("buildRandomMatrix");
-
                         while (isNumberOK) {
                             System.out.println("Please Enter Columns");
                             readFromUser = scannerMatrix.nextLine();
-                            isNumberOK = catchNotANumber(readFromUser);
+                            isNumberOK = catchNotANumberForRandomMatrix(readFromUser);
                             if (!isNumberOK) {
                                 toServer.writeObject(Integer.parseInt(readFromUser));
                             } else continue;
                             System.out.println("Please Enter Rows");
                             readFromUser = scannerMatrix.nextLine();
-                            isNumberOK = catchNotANumber(readFromUser);
+                            isNumberOK = catchNotANumberForRandomMatrix(readFromUser);
                             if (!isNumberOK) {
                                 toServer.writeObject(Integer.parseInt(readFromUser));
                             } else continue;
@@ -234,7 +236,11 @@ public class Client {
 
             if (showMenu == false) {
                 if(Q4Marked == false) {
-                    System.out.println("Please select What Game you want to play with the ");
+                    System.out.println("\nPlease select What Game you want to play with the \n" +
+                            "Task 1 - Find Paths of all the 1 in the Matrix\n" +
+                            "Task 2 - Find the shortest path between 2 indexes \n" +
+                            "Task 3 - Find how much submarines you have in your Matrix (-1 is none)\n" +
+                            "Task 4 - Find the lightest path between 2 indexes\n");
                     Scanner scannerOption = new Scanner(System.in);
                     readFromUser = scannerOption.nextLine();
                 }else {
@@ -262,8 +268,51 @@ public class Client {
                         System.out.println();
                         toServer.writeObject("findIndices");
                         toServer.writeObject(matrix);
-                        Object integer = fromServer.readObject();
-                        System.out.println("is " + integer);
+
+                        Scanner scannerOption = new Scanner(System.in);
+                        boolean isNumberOK = true;
+                        while (isNumberOK) {
+                            System.out.println("Please Enter x1 index for the first");
+                            readFromUser = scannerOption.nextLine();
+                            isNumberOK = catchNotANumberRegular(readFromUser);
+                            if (!isNumberOK) {
+                                x1 = Integer.parseInt(readFromUser);
+                            } else continue;
+                            System.out.println("Please Enter y1 index for the first");
+                            readFromUser = scannerOption.nextLine();
+                            isNumberOK = catchNotANumberRegular(readFromUser);
+                            if (!isNumberOK) {
+                                y1 = Integer.parseInt(readFromUser);
+                                index1 = new Index(x1,y1);
+                                toServer.writeObject(index1);
+                            } else continue;
+                        }
+
+                        isNumberOK = true;
+                        while (isNumberOK) {
+                            System.out.println("Please Enter x2 index for the first");
+                            readFromUser = scannerOption.nextLine();
+                            isNumberOK = catchNotANumberRegular(readFromUser);
+                            if (!isNumberOK) {
+                                x2 = Integer.parseInt(readFromUser);
+                            } else continue;
+                            System.out.println("Please Enter y2 index for the first");
+                            readFromUser = scannerOption.nextLine();
+                            isNumberOK = catchNotANumberRegular(readFromUser);
+                            if (!isNumberOK) {
+                                y2 = Integer.parseInt(readFromUser);
+                                index2 = new Index(x2,y2);
+                                toServer.writeObject(index2);
+                            } else continue;
+                        }
+
+                        Object sets = fromServer.readObject();
+
+                        if (!sets.equals(""))
+                            System.out.println("The Route from " + index1 + " to " + index2 + " is " + sets);
+                        else
+                            System.out.println("There is no Route");
+
                         break;
                     }
 
@@ -279,19 +328,19 @@ public class Client {
                     }
                     case "4": {
                         if(Q4Marked == true){
-                        System.out.println("type source and destination index:");
+                        System.out.println("type source and destination index:\n");
                         toServer.writeObject("cheapest path");
                         toServer.writeObject(matrix);
 
-                        System.out.print("Enter 2 numbers for start index: ");
+                        System.out.print("Enter 2 numbers for start index:\n");
                         // This method reads the number provided using keyboard
                         int x = getNum();
                         int y = getNum();
                         //send start index that scanned from user
                         toServer.writeObject(new Index(x,y));
-                        System.out.print("Enter 2 numbers for destination index: ");
-                        int x2 = getNum();
-                        int y2 = getNum();
+                        System.out.print("Enter 2 numbers for destination index:\n");
+                        x2 = getNum();
+                        y2 = getNum();
                         //send dest index that scanned from user
                         toServer.writeObject(new Index(x2,y2));
                         // get cheapest path as list
@@ -325,7 +374,7 @@ public class Client {
         }
     }
 
-    public static boolean catchNotANumber(String readFromUser){
+    public static boolean catchNotANumberForRandomMatrix(String readFromUser){
         boolean isNumberOK = true;
         try {
             Integer intValue = Integer.parseInt(readFromUser);
@@ -338,6 +387,17 @@ public class Client {
             System.out.println("Values need to be positive and from 2 to 1000");
         }
 
+        return isNumberOK;
+    }
+
+    public static boolean catchNotANumberRegular(String readFromUser){
+        boolean isNumberOK = true;
+        try {
+            Integer intValue = Integer.parseInt(readFromUser);
+            isNumberOK = false;
+        } catch (NumberFormatException e) {
+            System.out.println("Input is not a number");
+        }
         return isNumberOK;
     }
 

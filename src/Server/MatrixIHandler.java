@@ -53,7 +53,9 @@ public class MatrixIHandler implements IHandler {
                     //Need to inset index and a msg to say that there is not a path
                     matrix = (Matrix)objectInputStream.readObject();
                     matrix.printMatrix();
-                    List<List<Index>> paths = matrix.findPaths(matrix,new Index(1,4),new Index(4,0));
+                    Index index1 = (Index) objectInputStream.readObject();
+                    Index index2 = (Index) objectInputStream.readObject();
+                    List<List<Index>> paths = matrix.findPaths(matrix,index1,index2);
                     System.out.println(paths);
                     objectOutputStream.writeObject(matrix.printPath(paths));
                     break;
