@@ -1,12 +1,15 @@
 package Server;
 
+import Server.Node;
+import Server.Traversable;
+
 import java.util.*;
 
 public class ThreadLocalDfsVisit<T> {
     protected final ThreadLocal<Stack<Node<T>>> stackThreadLocal =
             ThreadLocal.withInitial(Stack::new);
     protected final ThreadLocal<Set<Node<T>>> setThreadLocal =
-            ThreadLocal.withInitial(()->new LinkedHashSet<>());
+            ThreadLocal.withInitial(()->new HashSet<>());
 
     protected void threadLocalPush(Node<T> node){
         stackThreadLocal.get().push(node);
@@ -16,7 +19,7 @@ public class ThreadLocalDfsVisit<T> {
         return stackThreadLocal.get().pop();
     }
 
-    public Set<T> traverse(Traversable<T> partOfGraph){
+    public List<T> traverse(Traversable<T> partOfGraph){
         threadLocalPush(partOfGraph.getOrigin());
         while(!stackThreadLocal.get().isEmpty()){
             Node<T> poppedNode = threadLocalPop();
@@ -29,11 +32,12 @@ public class ThreadLocalDfsVisit<T> {
                 }
             }
         }
-        HashSet<T> blackList = new HashSet<>();
+        List<T> blackList = new ArrayList<>();
         for (Node<T> node: setThreadLocal.get()){
             blackList.add(node.getData());
         }
         return blackList;
     }
+
 
 }
