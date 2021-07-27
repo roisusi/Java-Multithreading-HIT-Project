@@ -361,7 +361,7 @@ public class Client {
                                         System.out.println("There is no path.");
                                         Q4Marked = false;
                                     } else {
-                                        System.out.println("Cheapest Path from " + index1 + " to" + index2 + " is "+ cheapest + "\n");
+                                        System.out.println("Cheapest Path from " + index2 + " to" + index1 + " is "+ cheapest + "\n");
                                         Q4Marked = false;
                                     }
                                 }
