@@ -3,6 +3,7 @@ package Server;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 /**
  * This class implements adapter/wrapper/decorator design pattern implements Traversable interface{@link Traversable}
  * containing matrix {@link Matrix}, start index , destination index {@link Index}
@@ -16,6 +17,11 @@ public class CheapestPathMatrix implements Traversable<Index> {
         this.matrix = matrix;
     }
 
+    public CheapestPathMatrix(CheapestPathMatrix graph){
+        matrix = new Matrix(graph.getMatrix());
+        strIndex = new Index(graph.getStartIndex().getRow(),graph.getStartIndex().getColumn());
+        destIndex = new Index(graph.getDestIndex().getRow(),graph.getDestIndex().getColumn());
+    }
     public Index getStartIndex() {
         return strIndex;
     }
@@ -27,6 +33,18 @@ public class CheapestPathMatrix implements Traversable<Index> {
     }
 
     public void setDestIndex(Index destIndex) { this.destIndex = destIndex; }
+
+    public Node<Index> getDestNode() {
+        Node<Index> dest = new Node<>(destIndex,null, this.matrix.getValue(destIndex));
+        return dest;
+    }
+    public Node<Index> getStrNode() {
+        Node<Index> str = new Node<>(strIndex,null, this.matrix.getValue(strIndex));
+        return str; }
+
+    public int[][] getMatrix() {
+        return this.matrix.getPrimitiveMatrix();
+    }
 
     /**
      * This method gets the start index predefined in class, as node{@link Node} and setting his value.
@@ -92,11 +110,11 @@ public class CheapestPathMatrix implements Traversable<Index> {
         List<Node<Index>> list = new ArrayList<>();
         for (int i=0;i <matrix.getPrimitiveMatrix().length; i++){
             for (int j=0; j<matrix.getPrimitiveMatrix()[0].length; j++){
-                    Node<Index> tempNode = new Node<>(new Index(i,j));
-                    tempNode.setValue(matrix.getValue(tempNode.getData()));
-                    if(!tempNode.equals(someNode)){
-                        allIndex.add(tempNode);
-                    }
+                Node<Index> tempNode = new Node<>(new Index(i,j));
+                tempNode.setValue(matrix.getValue(tempNode.getData()));
+                if(!tempNode.equals(someNode)){
+                    allIndex.add(tempNode);
+                }
             }
         }
         return allIndex;

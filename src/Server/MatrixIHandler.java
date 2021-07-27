@@ -83,16 +83,25 @@ public class MatrixIHandler implements IHandler {
                 case "cheapest path":{
                     matrix = (Matrix)objectInputStream.readObject();
                     if (matrix!=null){
-                        Index strIndex = (Index)objectInputStream.readObject();
-                        Index endIndex = (Index)objectInputStream.readObject();
+                        try{
+                            Index strIndex = (Index)objectInputStream.readObject();
+                            Index endIndex = (Index)objectInputStream.readObject();
 
-                        CheapestPathMatrix myPath = new CheapestPathMatrix(matrix);
-                        myPath.setStartIndex(strIndex);
-                        myPath.setDestIndex(endIndex);
-                        Bellman doBellman = new Bellman();
-                        List<Index> rList = (List<Index>) doBellman.lightPath(myPath);
-                        System.out.println("cheapest path from: " + strIndex + "to: " + endIndex + " is: " + rList);
-                        objectOutputStream.writeObject(rList);
+                            CheapestPathMatrix myPath = new CheapestPathMatrix(matrix);
+                            myPath.setStartIndex(strIndex);
+                            myPath.setDestIndex(endIndex);
+                            //Bellman doBellman = new Bellman();
+                            CheapPath doPath = new CheapPath(myPath);
+                            List<Index> rList = (List<Index>) doPath.CheapestPath();
+                            System.out.println("Cheapest path from: " + strIndex + "to: " + endIndex + " is: " + rList);
+                            objectOutputStream.writeObject(rList);
+                            doPath.drian();
+                        }catch(ArrayIndexOutOfBoundsException e){
+                            System.out.println("Your index is out of the size of the matrix.");
+
+                            objectOutputStream.writeObject("Your index is out of the size of the matrix.");
+                        }
+
                     }
                 }
                 break;
