@@ -7,17 +7,15 @@ import java.util.Stack;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
+/**
+ * This Class represent a cheapest path between to given indexes on given matrix it take.
+ */
 public class CheapPath<T> {
     private CheapestPathMatrix graphMatrix;
-
     private ThreadPoolExecutor threadPoolExecutor;
     private List<Callable<T>> futureTasksList;
-
     public ArrayList<ArrayList<Path>> mainList;
-
     private ReadWriteLock readWriteLock;
-
     private Matrix matrix;
     private Node<Index> start;
     private Node<Index> dest;
@@ -26,18 +24,17 @@ public class CheapPath<T> {
         graphMatrix = new CheapestPathMatrix(graph);
         readWriteLock = new ReentrantReadWriteLock();
         matrix = new Matrix(graph.getMatrix());
-        //workingStack = new Stack<>();
-        //optPath = new Stack<>();
-
         futureTasksList = new ArrayList<>();
-
         start = graph.getStrNode();
         dest = graph.getDestNode();
-
         mainList = new ArrayList<>();
 
     }
-
+    /**
+     * This method runs algorithm to find the cheapest path between 2 given indexes in wighted matrix on multithreading
+     * Uses matrix and two indexes (as nodes {@link Node}) that initialised in the builder.
+     * @return List of all paths as indexes that have the lowest sum between two indexes from start point to destination.
+     */
     public Collection<T> CheapestPath(){
 
         threadPoolExecutor = new ThreadPoolExecutor(4,10,10, TimeUnit.SECONDS,new LinkedBlockingDeque<>());
@@ -51,24 +48,17 @@ public class CheapPath<T> {
             workStack.push(neighbor);
             futureTasksList.add(runSet(workStack));
         }
-
         try {
             //invoke all of the tasks
             //make them run parallel
             List<Future<T>> listOfFutureTasks = threadPoolExecutor.invokeAll(futureTasksList);
-
             //move all over the results
             for (Future<T> currResult: listOfFutureTasks) {
-                // lock and unlock writing to threads the thread
-                //readWriteLock.writeLock().lock();
                 mainList.add((ArrayList<Path>) currResult.get());
-                //readWriteLock.writeLock().unlock();
-
             }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-
         threadPoolExecutor.shutdown();
         try {
             if (!threadPoolExecutor.awaitTermination(60, TimeUnit.SECONDS)) {
@@ -78,22 +68,23 @@ public class CheapPath<T> {
             threadPoolExecutor.shutdownNow();
             Thread.currentThread().interrupt();
         }
-
-
         Collection listOfIndexes = new ArrayList<Index>();
         listOfIndexes = this.makeCheapestList();
-        //System.out.println(aa);
-
          return listOfIndexes;
     }
 
-
+    /**
+     * This method runs as Callable task for each neighbor of the starting node{@link Node} and check if the path is optional
+     * (is there a path between starting node and destination node).
+     * The algorithm works like that : using a stack to contain a optional path
+     * and creating a path object{@link Path} if it gets to the destination node{@link Node}.
+     * @param optpath a stack that contains a starting node and one of his neighbors
+     * @return a list of paths that start at the start index and ends at destination index and the sum of all values of indexes in the path.
+     */
     private Callable runSet(Stack<Node<Index>> optpath) {
         Callable <ArrayList<Path>> matrixCallable = (()-> {
             Stack<Node<Index>> workingStack;
             workingStack = new Stack<>();
-            //workingStack.push(start);
-            //workingStack.push(optpath.peek());
             Collection<Node<Index>> neighbors = new ArrayList<>();
             ArrayList<Path> pathArrayList = new ArrayList<>();
 
@@ -103,14 +94,11 @@ public class CheapPath<T> {
             }
             Node <Index> current = null;
             while (!workingStack.empty()){
-
                 current = workingStack.pop();
-
                 if(current.getParent().equals(optpath.peek())&&!optpath.contains(current)){
-
                     optpath.push(current);
                     if(current.equals(dest)){
-                        //כאן צריכה להיות פונקייצת קריאה ליצירת ליסט של מסלול.
+                        //create optional path and add it to path list.
                         Path optional = new Path(optpath);
                         pathArrayList.add(optional);
                         optpath.pop();
@@ -135,6 +123,11 @@ public class CheapPath<T> {
         threadPoolExecutor = null;
     }
 
+    /**
+     * This method generates a list of the cheapest path indexes{@link Index} from all the optional paths from start index to destination,
+     * by comparing their path value.
+     * @return List of all the cheapest paths as indexes{@link Index}
+     */
     public Collection<T> makeCheapestList() {
         List<Path> temp = new ArrayList<>();
         for (ArrayList<Path> list1 : mainList) {
@@ -147,7 +140,6 @@ public class CheapPath<T> {
                         temp.add(path);
                     } else if (temp.get(temp.size() - 1).getDistance() == path.getDistance()) {
                         temp.add(path);
-
                     }
                 }
             }
@@ -159,35 +151,4 @@ public class CheapPath<T> {
         return finalPath;
     }
 
-//    public void PrintWorkingStack(Stack<Node<Index>> temp){
-//        // If stack is empty
-//        if (temp.empty())
-//            return;
-//
-//        // Extract top of the stack
-//        Node<Index> x = temp.peek();
-//
-//        // Pop the top element
-//        temp.pop();
-//
-//        // Print the current top
-//        // of the stack i.e., x
-//        System.out.print(x + " ");
-//
-//        // Proceed to print
-//        // remaining stack
-//        PrintWorkingStack(temp);
-//
-//        // Push the element back
-//        temp.push(x);
-//    }
-
-//    public boolean Contains(Node<Index> o){
-//        for(Node<Index> e: optPath){
-//            if(e.equals(o)){
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
 }

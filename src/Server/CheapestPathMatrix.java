@@ -16,12 +16,16 @@ public class CheapestPathMatrix implements Traversable<Index> {
     public CheapestPathMatrix(Matrix matrix) {
         this.matrix = matrix;
     }
-
+    /**
+     * Constractor to initialize CheapestPathMatrix class object with same class object.
+     * @param graph of class CheapestPathMatrix
+     */
     public CheapestPathMatrix(CheapestPathMatrix graph){
         matrix = new Matrix(graph.getMatrix());
         strIndex = new Index(graph.getStartIndex().getRow(),graph.getStartIndex().getColumn());
         destIndex = new Index(graph.getDestIndex().getRow(),graph.getDestIndex().getColumn());
     }
+
     public Index getStartIndex() {
         return strIndex;
     }
@@ -34,10 +38,19 @@ public class CheapestPathMatrix implements Traversable<Index> {
 
     public void setDestIndex(Index destIndex) { this.destIndex = destIndex; }
 
+    /**
+     * This method gets the predefined destination index in the class, and setting his value.
+     * @return Destination index as Node {@link Node}
+     */
     public Node<Index> getDestNode() {
         Node<Index> dest = new Node<>(destIndex,null, this.matrix.getValue(destIndex));
         return dest;
     }
+
+    /**
+     * This method gets the start index as node{@link Node} and sets the value of that index.
+     * @return Starting node{@link Node}
+     */
     public Node<Index> getStrNode() {
         Node<Index> str = new Node<>(strIndex,null, this.matrix.getValue(strIndex));
         return str; }
@@ -66,7 +79,7 @@ public class CheapestPathMatrix implements Traversable<Index> {
 
     /**
      * This method gets the predefined destination index in the class, and setting his value.
-     * @return destination index as Node {@link Node}
+     * @return Destination index as Node {@link Node}
      */
     public Node<Index> getDestination() {
         if (this.destIndex == null) throw new NullPointerException("destination index is not initialized");
@@ -88,36 +101,6 @@ public class CheapestPathMatrix implements Traversable<Index> {
             reachableIndex.add(indexNode);
         }
         return reachableIndex;
-    }
-
-    public int getLength(){
-        return this.matrix.getPrimitiveMatrix().length;
-    }
-
-
-    /**
-     * This method takes the matrix {@link Matrix} in the class and sends it back as list of nodes{@link Node}
-     * initialized with values from matrix.
-     * @param someNode gets a node containing index {@link Index} and setting it to be the first in the list.
-     * @return ArrayList of nodes initialized with values related to indexes of the matrix.
-     */
-    public Collection<Node<Index>> getMatrixNodes(Node<Index> someNode) {
-        List<Node<Index>> allIndex = new ArrayList<>();
-
-        someNode.setValue(matrix.getValue(someNode.getData()));
-        allIndex.add(someNode);
-
-        List<Node<Index>> list = new ArrayList<>();
-        for (int i=0;i <matrix.getPrimitiveMatrix().length; i++){
-            for (int j=0; j<matrix.getPrimitiveMatrix()[0].length; j++){
-                Node<Index> tempNode = new Node<>(new Index(i,j));
-                tempNode.setValue(matrix.getValue(tempNode.getData()));
-                if(!tempNode.equals(someNode)){
-                    allIndex.add(tempNode);
-                }
-            }
-        }
-        return allIndex;
     }
 
     @Override
