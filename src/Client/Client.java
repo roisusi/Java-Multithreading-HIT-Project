@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 
 public class Client {
@@ -243,7 +244,8 @@ public class Client {
                                 "Task 1 - Find Paths of all the 1 in the Matrix\n" +
                                 "Task 2 - Find the shortest path between 2 indexes \n" +
                                 "Task 3 - Find how much submarines you have in your Matrix (-1 is none)\n" +
-                                "Task 4 - Find the lightest path between 2 indexes\n");
+                                "Task 4 - Find the lightest path between 2 indexes\n" +
+                                "5 to Menu\n");
                         Scanner scannerOption = new Scanner(System.in);
                         readFromUser = scannerOption.nextLine();
                     } else {
@@ -366,6 +368,7 @@ public class Client {
                             } else {
                                 System.out.println("Sorry you can select Task 4 with that matrix\n");
                             }
+                            showMenu = true;
                             break;
                         }
                         case "5": {
