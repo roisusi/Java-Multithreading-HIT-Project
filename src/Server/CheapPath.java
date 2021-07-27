@@ -88,30 +88,38 @@ public class CheapPath<T> {
             Collection<Node<Index>> neighbors = new ArrayList<>();
             ArrayList<Path> pathArrayList = new ArrayList<>();
 
-            neighbors = graphMatrix.getNeighborsNodes(optpath.peek());
-            for(Node neighbor: neighbors) {
-                workingStack.push(neighbor);
+            if(optpath.peek().equals(dest)){
+                Path optional = new Path(optpath);
+                pathArrayList.add(optional);
+                optpath.pop();
             }
-            Node <Index> current = null;
-            while (!workingStack.empty()){
-                current = workingStack.pop();
-                if(current.getParent().equals(optpath.peek())&&!optpath.contains(current)){
-                    optpath.push(current);
-                    if(current.equals(dest)){
-                        //create optional path and add it to path list.
-                        Path optional = new Path(optpath);
-                        pathArrayList.add(optional);
-                        optpath.pop();
-                    }
-                    if(!current.equals(dest)) {
-                        neighbors = graphMatrix.getNeighborsNodes(current);
-                        for (Node neighbor : neighbors) {
-                            workingStack.push(neighbor);
+            else {
+                neighbors = graphMatrix.getNeighborsNodes(optpath.peek());
+                for (Node neighbor : neighbors) {
+                    workingStack.push(neighbor);
+                }
+                Node<Index> current = null;
+                while (!workingStack.empty()) {
+                    current = workingStack.pop();
+                    if (current.getParent().equals(optpath.peek()) && !optpath.contains(current)) {
+                        optpath.push(current);
+                        if (current.equals(dest)) {
+                            //create optional path and add it to path list.
+                            Path optional = new Path(optpath);
+                            pathArrayList.add(optional);
+                            optpath.pop();
                         }
+                        if (!current.equals(dest)) {
+                            neighbors = graphMatrix.getNeighborsNodes(current);
+                            for (Node neighbor : neighbors) {
+                                workingStack.push(neighbor);
+                            }
+                        }
+                    } else if (!current.getParent().equals(optpath.peek())) {
+                        optpath.pop();
+                        workingStack.push(current);
                     }
                 }
-                else if(!current.getParent().equals(optpath.peek()))
-                {optpath.pop(); workingStack.push(current);}
             }
             return pathArrayList;
         });

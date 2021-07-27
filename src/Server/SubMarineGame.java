@@ -61,7 +61,7 @@ public class SubMarineGame<T> {
             System.out.println("Error");
         }
 
-        try {
+         try {
             //Now invoke all of the tasks
             //make them run parallel
             List<Future<T>> listOfFutureTasks = threadPoolExecutor.invokeAll(futureTasksList);
