@@ -8,6 +8,11 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
+/**
+    This Class Represent a Matrix and tools that use the matrix
+    such as find neighbors , shortest paths from (x1,y1) to (x2,y2) and all the indices contains 1 on a matrix.
+ */
+
 
 public class Matrix implements Serializable {
 
