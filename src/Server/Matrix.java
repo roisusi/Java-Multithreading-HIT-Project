@@ -385,30 +385,30 @@ public class Matrix implements Serializable {
         return listOfLists;
     }
 
-    public static void main(String[] args) {
-        int[][] source = {
-                {1, 0, 1, 0, 0},
-                {1, 0, 1, 0, 1},
-                {1, 0, 0, 1, 1},
-                {0, 0, 1, 0, 1},
-                {1, 1, 1, 0, 0}
-//                {1,0,0},
-//                {1,0,1},
-//                {1,0,1}
+//    public static void main(String[] args) {
+//        int[][] source = {
+//                {1, 0, 1, 0, 0},
+//                {1, 0, 1, 0, 1},
+//                {1, 0, 0, 1, 1},
+//                {0, 0, 1, 0, 1},
+//                {1, 1, 1, 0, 0}
+////                {1,0,0},
+////                {1,0,1},
+////                {1,0,1}
+//
+//        };
+//        Index start = new Index(1,4);
+//        Index end = new Index(4,0);
+//        Matrix matrix = new Matrix(source);
+//
+//
+//        List<HashSet<Index>> hashSetGroups =  Matrix.findGroups(matrix);
+//        System.out.println(hashSetGroups);
+////        List<List> listGroups = convertHashToList(hashSetGroups);
+////        System.out.println(listGroups);
+//
+//        System.out.println(findPaths(matrix, start,end));
 
-        };
-        Index start = new Index(1,4);
-        Index end = new Index(4,0);
-        Matrix matrix = new Matrix(source);
-
-
-        List<HashSet<Index>> hashSetGroups =  Matrix.findGroups(matrix);
-        System.out.println(hashSetGroups);
-//        List<List> listGroups = convertHashToList(hashSetGroups);
-//        System.out.println(listGroups);
-
-        System.out.println(findPaths(matrix, start,end));
-
-    }
+//    }
 }
 

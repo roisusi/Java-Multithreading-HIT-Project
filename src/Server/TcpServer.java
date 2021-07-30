@@ -87,7 +87,7 @@ public class TcpServer {
 
         new Thread(() -> {
             // lazy loading
-            threadPool = new ThreadPoolExecutor(3, 5, 10,
+            threadPool = new ThreadPoolExecutor(10, 15, 10,
                     TimeUnit.SECONDS, new LinkedBlockingQueue<>());
             try {
                 /*
